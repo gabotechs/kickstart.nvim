@@ -166,6 +166,21 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- WARNING: My custom keymaps
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Show line diagnostics' })
+-- Exit visual mode
+vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'jK', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'Jk', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'JK', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'kJ', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'Kj', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'KJ', '<Esc>', { desc = 'Exit insert mode' })
+-- Map <leader>w to save the current file
+vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { noremap = true, silent = true, desc = '[W]rite (save) file' })
+vim.keymap.set('n', 'Q', '<cmd>q<CR>', { noremap = true, silent = true, desc = 'Quits' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
