@@ -164,23 +164,22 @@ vim.opt.scrolloff = 10
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Open [D]iagnostic quickfix list' })
+vim.keymap.set('n', '<leader>od', vim.diagnostic.setloclist, { desc = '[O]pen [D]iagnostic quickfix list' })
 
 -- WARNING: My custom keymaps
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Show line diagnostics' })
--- Exit visual mode
-vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
-vim.keymap.set('i', 'jK', '<Esc>', { desc = 'Exit insert mode' })
-vim.keymap.set('i', 'Jk', '<Esc>', { desc = 'Exit insert mode' })
-vim.keymap.set('i', 'JK', '<Esc>', { desc = 'Exit insert mode' })
-vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Exit insert mode' })
-vim.keymap.set('i', 'kJ', '<Esc>', { desc = 'Exit insert mode' })
-vim.keymap.set('i', 'Kj', '<Esc>', { desc = 'Exit insert mode' })
-vim.keymap.set('i', 'KJ', '<Esc>', { desc = 'Exit insert mode' })
--- Map <leader>w to save the current file
+vim.keymap.set('i', 'jk', '<Esc>')
+vim.keymap.set('i', 'jK', '<Esc>')
+vim.keymap.set('i', 'Jk', '<Esc>')
+vim.keymap.set('i', 'JK', '<Esc>')
+vim.keymap.set('i', 'kj', '<Esc>')
+vim.keymap.set('i', 'kJ', '<Esc>')
+vim.keymap.set('i', 'Kj', '<Esc>')
+vim.keymap.set('i', 'KJ', '<Esc>')
 vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { noremap = true, silent = true, desc = '[W]rite (save) file' })
-vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { noremap = true, silent = true, desc = 'Quits' })
-vim.keymap.set('n', '<leader>Q', '<cmd>q!<CR>', { noremap = true, silent = true, desc = 'Force quits' })
+vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { noremap = true, silent = true, desc = '[Q]uit window' })
+vim.keymap.set('n', '<leader>c', '<cmd>bd<CR>', { noremap = true, silent = true, desc = '[Close] file' })
+vim.keymap.set('n', '<leader>Q', '<cmd>q!<CR>', { noremap = true, silent = true, desc = 'Force [Q]uit window' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -291,7 +290,7 @@ require('lazy').setup({
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.opt.timeoutlen
-      delay = 0,
+      delay = 200,
       icons = {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
@@ -331,13 +330,13 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
-        { '<leader>d', group = '[D]iagnostics' },
+        { '<leader>o', group = '[O]pen' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>d', group = '[D]ebug' },
+        { '<leader>g', group = '[G]it', mode = { 'n', 'v' } },
       },
     },
   },
@@ -427,16 +426,16 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = '[Opt-Tab] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>/', function()
+      vim.keymap.set('n', '<leader>sb', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
           winblend = 10,
           previewer = false,
         })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      end, { desc = 'Fuzzily [S]earch in current [B]uffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -940,6 +939,19 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        -- -Line-comment keymap
+        line = '<leader>/',
+      },
+      opleader = {
+        -- -Line-comment keymap
+        line = '<leader>/',
+      },
+    },
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
