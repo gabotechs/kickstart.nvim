@@ -678,6 +678,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'sql-formatter', -- Used to format SQL code
+        'black', -- Python code formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -733,8 +734,8 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         sql = { 'sql_formatter' },
+        python = { 'isort', 'black' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
