@@ -405,9 +405,20 @@ require('lazy').setup({
         --   },
         -- },
         -- pickers = {}
+        defaults = {
+          sorting_strategy = 'ascending',
+          layout_config = {
+            prompt_position = 'top',
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
+          },
+        },
+        pickers = {
+          oldfiles = {
+            cwd_only = true,
           },
         },
       }
@@ -416,11 +427,29 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
+      function vim.find_files_from_project_git_root()
+        local function is_git_repo()
+          vim.fn.system 'git rev-parse --is-inside-work-tree'
+          return vim.v.shell_error == 0
+        end
+        local function get_git_root()
+          local dot_git_path = vim.fn.finddir('.git', '.;')
+          return vim.fn.fnamemodify(dot_git_path, ':h')
+        end
+        local opts = {}
+        if is_git_repo() then
+          opts = {
+            cwd = get_git_root(),
+          }
+        end
+        require('telescope.builtin').find_files(opts)
+      end
+
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = '[F]ile Searcher' })
+      vim.keymap.set('n', '<leader>f', vim.find_files_from_project_git_root, { desc = '[F]ile Searcher' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>st', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -679,6 +708,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'sql-formatter', -- Used to format SQL code
         'black', -- Python code formatter
+        'prettierd', -- JS and TS formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -735,6 +765,8 @@ require('lazy').setup({
         lua = { 'stylua' },
         sql = { 'sql_formatter' },
         python = { 'isort', 'black' },
+        typescript = { 'prettierd' },
+        typescriptreact = { 'prettierd' },
         -- Conform can also run multiple formatters sequentially
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
